@@ -72,8 +72,14 @@ for i in range(total_instance):
     else:
         sitl_home_longitude = sitl_home_longitude + 0.000200
 
+    '''
     sitl_boot_list = ['dronekit-sitl',sitl_frame,
                     '--home=%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
+                    '--instance=%s'%(i)]
+    '''
+    
+    sitl_boot_list = ['sim_vehicle.py',sitl_frame,
+                    '--custom-location==%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
                     '--instance=%s'%(i)]
 
     print("# sitl command:{0}".format(sitl_boot_list))
@@ -81,7 +87,7 @@ for i in range(total_instance):
     processes.append(p)
     time.sleep(1)
 
-    connection_string = 'tcp:localhost:' + str(5760 + int(i) * 10 )
+    connection_string = 'tcp:localhost:' + str(5762 + int(i) * 10 )
     print( "FC: %s" % (connection_string) )
     connection_instance.append(connect(connection_string, wait_ready=True))
 

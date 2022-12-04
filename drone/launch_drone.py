@@ -1,20 +1,18 @@
-from subprocess import Popen
-from signal import signal, SIGINT
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 import time
 
 print( "Lauching drones" )
 
 total_instance = 4
+target_latitude = 35.879143
+target_longitude = 140.339577 - 0.001800
+home_latitude = 35.879143
+home_longitude = 140.339577 + 0.001400
 
 def set_attitude(vehicle,aTargetAltitude):
 
-    """
-    Arms vehicle and fly to aTargetAltitude.
-    """
-
     print("Basic pre-arm checks")
-    # Don't try to arm until autopilot is ready
+    vehicle.mode = VehicleMode("GUIDED")
     while not vehicle.is_armable:
         print(" Waiting for vehicle to initialise...")
         time.sleep(1)
@@ -22,36 +20,36 @@ def set_attitude(vehicle,aTargetAltitude):
     print("Arming motors")
     vehicle.armed = True
     
-    # Confirm vehicle armed before attempting to take off
     while not vehicle.armed:
         print(" Waiting for arming...")
         time.sleep(1)
 
-    # Copter should arm in GUIDED mode
-    vehicle.mode = VehicleMode("GUIDED")
-
     print("Taking off!")
     vehicle.simple_takeoff(aTargetAltitude)  # Take off to target altitude
 
-    # Wait until the vehicle reaches a safe height before processing the goto
-    #  (otherwise the command after Vehicle.simple_takeoff will execute
-    #   immediately).
+
     while True:
         print(" Altitude: ", vehicle.location.global_relative_frame.alt)
-        # Break and return from function just below target altitude.
+
         if vehicle.location.global_relative_frame.alt >= aTargetAltitude * 0.95:
             print("Reached target altitude")
             break
         time.sleep(5)
 
 def go_target_point(vehicle):
+
     print("Set default/target airspeed to 3")
     vehicle.airspeed = 3
 
-    print("Going towards first point for 30 seconds ...")
-    point1 = LocationGlobalRelative(target_latitude, target_longitude, 20)
-    vehicle.simple_goto(point1)
-
+    while True:
+        print("Going towards target point")
+        point1 = LocationGlobalRelative(target_latitude, target_longitude, 10)
+        vehicle.simple_goto(point1)
+        time.sleep(120)
+        print("Going towards home location")
+        point2 = LocationGlobalRelative(home_latitude,home_longitude, 10)
+        vehicle.simple_goto(point2)
+        time.sleep(120)
 
 connection_instance = []
 for i in range(total_instance):

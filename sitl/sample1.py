@@ -55,7 +55,7 @@ def set_attitude(vehicle,aTargetAltitude):
         if vehicle.location.global_relative_frame.alt >= aTargetAltitude * 0.95:
             print("Reached target altitude")
             break
-        time.sleep(1)
+        time.sleep(5)
 
 def go_target_point(vehicle):
     print("Set default/target airspeed to 3")
@@ -78,16 +78,17 @@ for i in range(total_instance):
                     '--instance=%s'%(i)]
     '''
     
-    sitl_boot_list = ['sim_vehicle.py',sitl_frame,
-                    '--custom-location==%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
+    sitl_boot_list = ['sim_vehicle.py','--vehicle=ArduCopter','--frame=quad',
+                    '--custom-location=%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
                     '--instance=%s'%(i)]
 
     print("# sitl command:{0}".format(sitl_boot_list))
     p = Popen(sitl_boot_list)
-    processes.append(p)
-    time.sleep(1)
+    #processes.append(p)
+    time.sleep(5)
 
-    connection_string = 'tcp:localhost:' + str(5762 + int(i) * 10 )
+'''
+    connection_string = 'tcp:localhost:' + str(5760 + int(i) * 10 )
     print( "FC: %s" % (connection_string) )
     connection_instance.append(connect(connection_string, wait_ready=True))
 
@@ -125,3 +126,4 @@ for p in processes:
     time.sleep(1)
 
 print("All shutdown")
+'''

@@ -17,8 +17,7 @@ for i in range(total_instance):
     print( "FC: %s" % (connection_string) )
     connection_instance.append(connect(connection_string, wait_ready=True))
 
-@connection_instance[3].on_attribute('location.global_frame')
-def listener(self, attr_name, value):
+def location_callback(self, attr_name, value):
     print("Global: {0}".format(value))
     for i,c in enumerate(connection_instance):
         if i in [0,1,2]:
@@ -27,3 +26,5 @@ def listener(self, attr_name, value):
             metres = get_distance_metres(location,target_location)
             if metres > 7:
                 print("Instance:{0} - distance:{1}".format(i,metres))
+
+connection_instance[3].add_attribute_listener('location.global_frame', location_callback)

@@ -53,7 +53,7 @@ def go_target_point(vehicle):
 
 connection_instance = []
 for i in range(total_instance):
-    connection_string = 'tcp:localhost:' + str(5763 + int(i) * 10 )
+    connection_string = 'udp:localhost:' + str(15762 + int(i) * 10 )
     print( "FC: %s" % (connection_string) )
     connection_instance.append(connect(connection_string, wait_ready=True))
 

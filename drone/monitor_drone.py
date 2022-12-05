@@ -26,6 +26,12 @@ def location_callback(self, attr_name, value):
             metres = get_distance_metres(location,target_location)
             if metres < 50:
                 print("Instance:{0} - distance:{1}".format(i,metres))
+                if connection_instance[i].mode != "STABILIZE":
+                    connection_instance[i].mode = VehicleMode("STABILIZE")
+            else:
+                if connection_instance[i].mode != "GUIDED":
+                    connection_instance[i].mode = VehicleMode("GUIDED")
+
 
 connection_instance[3].add_attribute_listener('location.global_frame', location_callback)
 

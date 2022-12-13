@@ -38,8 +38,8 @@ def set_attitude(vehicle,aTargetAltitude):
 
 def go_target_point(vehicle):
 
-    print("Set default/target airspeed to 3")
-    vehicle.airspeed = 3
+    print("Set default/target airspeed to 1")
+    vehicle.airspeed = 1
 
     while True:
         print("Going towards target point")

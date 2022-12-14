@@ -1,17 +1,30 @@
 already_set = false
+param_set = false
 
-function update() 
-  local original_location = ahrs:get_position()
-  flight_mode = vehicle:get_mode()
-  if flight_mode == 111 and already_set == false then
-    gcs:send_text(0, "HOGEHOGE")
-    vehicle:set_target_location(current:lat()-0.0001,current:lng(),current:alt())
-    already_set = true
+function update()
+  if param_set == false then
+    local PARAM_TABLE_KEY = 72
+    assert(param:add_table(PARAM_TABLE_KEY, "MON_", 30), 'could not add param table')
+    assert(param:add_param(PARAM_TABLE_KEY, 1,  'NEAR', 0), 'could not add param1')
+    gcs:send_text(0, "Set monitoring parameter")
+    param_set = true
   end
-  if flight_mode == 4 and already_set == true then
-    gcs:send_text(0, "Rest Monitoring")
-    vehicle:set_target_location(current:lat()+0.0001,current:lng(),current:alt())
-    already_set = false
+  if param_set == true then
+    local MON_NEAR = Parameter()
+    MON_NEAR:init('MON_NEAR')
+    local near_status = MON_NEAR:get()
+    if near_status == 1 and already_set == false then
+      local target_vel = Vector3f()
+      target_vel:x(2)
+      vehicle:set_target_velocity_NED(target_vel)
+      already_set = true
+    end
+    if near_status == 0 and already_set == true then
+      local target_vel = Vector3f()
+      target_vel:x(-2)
+      vehicle:set_target_velocity_NED(target_vel)
+      already_set = false
+    end 
   end
   return update, 1000
 end

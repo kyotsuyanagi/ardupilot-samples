@@ -15,13 +15,13 @@ function update()
     local near_status = MON_NEAR:get()
     if near_status == 1 and already_set == false then
       local target_vel = Vector3f()
-      target_vel:x(2)
+      target_vel:x(10)
       vehicle:set_target_velocity_NED(target_vel)
       already_set = true
     end
     if near_status == 0 and already_set == true then
       local target_vel = Vector3f()
-      target_vel:x(-2)
+      target_vel:x(-10)
       vehicle:set_target_velocity_NED(target_vel)
       already_set = false
     end 

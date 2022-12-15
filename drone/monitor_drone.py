@@ -17,6 +17,7 @@ for i in range(total_instance):
     print( "FC: %s" % (connection_string) )
     connection_instance.append(connect(connection_string, wait_ready=True))
 
+
 def location_callback(self, attr_name, value):
     #print("Global: {0}".format(value))
     for i,c in enumerate(connection_instance):
@@ -24,7 +25,7 @@ def location_callback(self, attr_name, value):
             location = connection_instance[i].location.global_frame
             target_location = value
             metres = get_distance_metres(location,target_location)
-            if metres < 50:
+            if metres < 100:
                 print("near")
                 connection_instance[i].parameters['MON_NEAR']=1
             else:

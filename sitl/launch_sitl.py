@@ -18,9 +18,9 @@ processes = []
 
 for i in range(total_instance):
     if i==total_instance-1:
-        sitl_home_longitude = sitl_home_longitude + 0.001000
+        sitl_home_longitude = sitl_home_longitude + 0.001100
     else:
-        sitl_home_longitude = sitl_home_longitude + 0.000200
+        sitl_home_longitude = sitl_home_longitude + 0.000100
 
     sitl_boot_list = ['sim_vehicle.py','--vehicle=ArduCopter','--frame=quad',
                     '--custom-location=%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),

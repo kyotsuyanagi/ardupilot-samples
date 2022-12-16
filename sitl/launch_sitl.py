@@ -1,5 +1,4 @@
-from subprocess import Popen
-import time
+import subprocess
 
 print( "Starting SITL by process" )
 
@@ -22,11 +21,25 @@ for i in range(total_instance):
     else:
         sitl_home_longitude = sitl_home_longitude + 0.000100
 
-    sitl_boot_list = ['sim_vehicle.py','--vehicle=ArduCopter','--frame=quad',
-                    '--custom-location=%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
-                    '--instance=%s'%(i)]
-
+    sitl_boot_list = [
+        'sim_vehicle.py',
+        '--vehicle=ArduCopter',
+        #'--frame={0}'.format(sitl_frame),
+        '--custom-location=%s,%s,%s,%s' % (str(sitl_home_latitude),str(sitl_home_longitude),sitl_home_altitude,sitl_home_direction),
+        '--instance=%s'%(i)
+    ]
     print("# sitl command:{0}".format(sitl_boot_list))
-    p = Popen(sitl_boot_list)
-    time.sleep(5)
+    subprocess.run(sitl_boot_list)
+
+    master_port = str(5762 + int(i) * 10 )
+    out_port1 = str(14762 + int(i) * 10 )
+    out_port2 = str(15762 + int(i) * 10 )
+    mavproxy = [
+        'mavproxy.py',
+        '--master','tcp:127.0.0.1:{0}'.format(master_port),
+        '--out','127.0.0.1:{0}'.format(out_port1),
+        '--out','127.0.0.1:{0}'.format(out_port2)
+    ]
+    print("# mavproxy command:{0}".format(mavproxy))
+    subprocess.run(mavproxy)
 

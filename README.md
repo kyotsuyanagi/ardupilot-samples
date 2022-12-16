@@ -31,10 +31,9 @@ $ ~/ardupilot/Tools/environment_install/install-prereqs-ubuntu.sh -y
 ```
 
 ## アプリケーションの実行手順
-1. SITLで機体を立ち上げます。-> sitl/launch_sitl.pyで４機体立ち上げます。
-2. スクリプトがアクセスするためのmavlinkポートやMission Plannerで接続するためのポートを拡張するため、mavproxy.pyで４機のSITLポートを拡張します。 -> sitl/launch_mavproxy.py
-3. 機体を動かします。 -> drone/launch_drone.py
-4. 機体を監視します。 -> drone/monitor_drone.py
-5. 管理スクリプトからパラメータ経由で通知され、パラメータの値で機体を制御します。0は100m以上離れている。1は100m未満に近づいている。 -> lua/receiver.lua
+1. SITLで４機体立ち上げます。スクリプトがアクセスするためのmavlinkポートやMission Plannerで接続するためのポートを拡張するため、mavproxy.pyで４機のSITLポートを拡張します。 -> sitl/launch_sitl.py
+2. 機体を動かします。３機は上空で停止し１機は３機に向かって飛行します。 -> drone/launch_drone.py
+3. 機体を監視します。向かってくる機体の距離が100m以内になると、監視している機体のカスタムパラメータ[MON_NEAR]を変更し通知します。-> drone/monitor_drone.py 
+4. 管理スクリプトからカスタムパラメータ[MON_NEAR]の値の変更があった場合、機体を制御します。0は100m以上離れている。1は100m未満に近づいている。 -> lua/receiver.lua
 
 

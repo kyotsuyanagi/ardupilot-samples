@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 print( "Starting SITL by process" )
 
@@ -29,7 +30,8 @@ for i in range(total_instance):
         '--instance=%s'%(i)
     ]
     print("# sitl command:{0}".format(sitl_boot_list))
-    subprocess.run(sitl_boot_list)
+    subprocess.Popen(sitl_boot_list)
+    time.sleep(15)
 
     master_port = str(5762 + int(i) * 10 )
     out_port1 = str(14762 + int(i) * 10 )
@@ -41,5 +43,6 @@ for i in range(total_instance):
         '--out','127.0.0.1:{0}'.format(out_port2)
     ]
     print("# mavproxy command:{0}".format(mavproxy))
-    subprocess.run(mavproxy)
+    subprocess.Popen(mavproxy)
+    time.sleep(3)
 

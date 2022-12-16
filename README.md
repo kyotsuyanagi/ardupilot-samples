@@ -36,4 +36,5 @@ $ ~/ardupilot/Tools/environment_install/install-prereqs-ubuntu.sh -y
 3. 機体を監視します。向かってくる機体の距離が100m以内になると、監視している機体のカスタムパラメータ[MON_NEAR]を変更し通知します。-> drone/monitor_drone.py 
 4. 管理スクリプトからカスタムパラメータ[MON_NEAR]の値の変更があった場合、機体を制御します。0は100m以上離れている。1は100m未満に近づいている。 -> lua/receiver.lua
 
-
+## デモ動画
+https://vimeo.com/781835282
